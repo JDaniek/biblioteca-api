@@ -31,24 +31,31 @@ public class LibroService {
         this.editorialRepository = editorialRepository;
     }
 
-    public LibroResponseDTO crear(LibroRequestDTO libroDTO) {
-        Libro libro = new Libro();
+    private void asignarDatos(Libro libro, LibroRequestDTO libroDTO) {
+
         libro.setTitulo(libroDTO.getTitulo());
         libro.setIsbn(libroDTO.getIsbn());
 
         libro.setAutor(autorRepository.findById(libroDTO.getIdAutor())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "El autor no existe")));
 
+
+        libro.setGenero(null);
         if (libroDTO.getIdGenero() != null) {
             libro.setGenero(generoRepository.findById(libroDTO.getIdGenero())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "El género no existe")));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "El genéro no existe")));
         }
 
+        libro.setEditorial(null);
         if (libroDTO.getIdEditorial() != null) {
             libro.setEditorial(editorialRepository.findById(libroDTO.getIdEditorial())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "La editorial no existe")));
         }
+    }
 
+    public LibroResponseDTO crear(LibroRequestDTO libroDTO) {
+        Libro libro = new Libro();
+        asignarDatos(libro, libroDTO);
         return convertirADTO(libroRepository.save(libro));
     }
 
