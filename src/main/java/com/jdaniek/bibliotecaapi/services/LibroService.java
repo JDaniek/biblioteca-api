@@ -59,6 +59,15 @@ public class LibroService {
         return convertirADTO(libroRepository.save(libro));
     }
 
+    public LibroResponseDTO actualizar(Long id, LibroRequestDTO libroDTO) {
+        Libro libro = libroRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "El libro no existe"));
+
+        asignarDatos(libro, libroDTO);
+        return convertirADTO(libroRepository.save(libro));
+    }
+
+
     public List<LibroResponseDTO> listarTodos() {
         return libroRepository.findAll().stream()
                 .map(this::convertirADTO)
