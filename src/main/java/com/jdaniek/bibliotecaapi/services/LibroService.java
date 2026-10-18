@@ -67,6 +67,14 @@ public class LibroService {
         return convertirADTO(libroRepository.save(libro));
     }
 
+    public void eliminar(Long id) {
+        if (!libroRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El libro no existe");
+        }
+
+        libroRepository.deleteById(id);
+    }
+
 
     public List<LibroResponseDTO> listarTodos() {
         return libroRepository.findAll().stream()
