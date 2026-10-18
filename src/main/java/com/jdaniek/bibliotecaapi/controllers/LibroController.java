@@ -27,6 +27,14 @@ public class LibroController {
         return ResponseEntity.status(HttpStatus.CREATED).body(libroCreado);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<LibroResponseDTO> actualizar(@PathVariable Long id,
+                                                       @Valid @RequestBody LibroRequestDTO libroDTO) {
+        libroService.eliminar(id);
+        return ResponseEntity.ok(libroService.actualizar(id, libroDTO));
+    }
+
+
     @GetMapping
     public ResponseEntity<List<LibroResponseDTO>> listarTodos() {
         return ResponseEntity.ok(libroService.listarTodos());
