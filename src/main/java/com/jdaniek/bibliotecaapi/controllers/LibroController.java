@@ -30,8 +30,7 @@ public class LibroController {
     @PutMapping("/{id}")
     public ResponseEntity<LibroResponseDTO> actualizar(@PathVariable Long id,
                                                        @Valid @RequestBody LibroRequestDTO libroDTO) {
-        libroService.eliminar(id);
-        return ResponseEntity.ok(libroService.actualizar(id, libroDTO));
+        return ResponseEntity.status(HttpStatus.OK).body(libroService.actualizar(id, libroDTO));
     }
 
 
