@@ -2,11 +2,9 @@ package com.jdaniek.bibliotecaapi.services;
 
 import com.jdaniek.bibliotecaapi.dto.LibroRequestDTO;
 import com.jdaniek.bibliotecaapi.dto.LibroResponseDTO;
+import com.jdaniek.bibliotecaapi.models.Ejemplar;
 import com.jdaniek.bibliotecaapi.models.Libro;
-import com.jdaniek.bibliotecaapi.repositories.AutorRepository;
-import com.jdaniek.bibliotecaapi.repositories.EditorialRepository;
-import com.jdaniek.bibliotecaapi.repositories.GeneroRepository;
-import com.jdaniek.bibliotecaapi.repositories.LibroRepository;
+import com.jdaniek.bibliotecaapi.repositories.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,15 +18,18 @@ public class LibroService {
     private final AutorRepository autorRepository;
     private final GeneroRepository generoRepository;
     private final EditorialRepository editorialRepository;
+    private final EjemplarRepository ejemplarRepository;
 
     public LibroService(LibroRepository libroRepository,
                         AutorRepository autorRepository,
                         GeneroRepository generoRepository,
-                        EditorialRepository editorialRepository) {
+                        EditorialRepository editorialRepository,
+                        EjemplarRepository ejemplarRepository) {
         this.libroRepository = libroRepository;
         this.autorRepository = autorRepository;
         this.generoRepository = generoRepository;
         this.editorialRepository = editorialRepository;
+        this.ejemplarRepository = ejemplarRepository;
     }
 
     private void asignarDatos(Libro libro, LibroRequestDTO libroDTO) {
@@ -89,7 +90,9 @@ public class LibroService {
                 libro.getIsbn(),
                 libro.getAutor().getNombre(),
                 libro.getGenero() != null ? libro.getGenero().getNombre() : null,
-                libro.getEditorial() != null ? libro.getEditorial().getNombre() : null
+                libro.getEditorial() != null ? libro.getEditorial().getNombre() : null,
+                ejemplarRepository.countByLibroId(libro.getId()),
+                ejemplarRepository.countByLibroIdAndPrestadoFalse(libro.getId())
         );
     }
 }
