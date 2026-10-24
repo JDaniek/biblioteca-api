@@ -16,10 +16,10 @@ public class Ejemplar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Ver si es ManyToOne o OneToOne
     @ManyToOne
     @JoinColumn(name = "id_libro", nullable = false)
     private Libro libro;
 
-    private boolean isLoan = false;
+    @Column(name = "is_loan", nullable = false)
+    private boolean prestado;
 }
