@@ -12,4 +12,6 @@ public class LibroResponseDTO {
     private String autor;
     private String genero;
     private String editorial;
+    private long totalEjemplares;
+    private long ejemplaresDisponibles;
 }
