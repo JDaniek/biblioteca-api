@@ -37,4 +37,8 @@ public class User {
     @Column(name = "fecha_registro", nullable = false, updatable = false)
     private LocalDateTime fechaCreacionUser;
 
+    @PrePersist
+    protected void onCreate() {
+        this.fechaCreacionUser = LocalDateTime.now();
+    }
 }
